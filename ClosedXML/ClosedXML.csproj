@@ -14,7 +14,7 @@
     <NoWarn>$(NoWarn);NU1605;NU5104;CS1591</NoWarn>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>$(AssemblyName)-with-font-cache</PackageId>
-    <Version>0.97.1-preview-rcx2</Version>
+    <Version>0.97.1-preview-rc-v3</Version>
     <IncludeSymbols>False</IncludeSymbols>
   </PropertyGroup>
 

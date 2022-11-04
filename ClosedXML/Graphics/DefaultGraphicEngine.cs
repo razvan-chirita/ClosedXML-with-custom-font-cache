@@ -97,7 +97,7 @@ namespace ClosedXML.Graphics
         /// <param name="addSystemFonts">True if systemFonts should be added to FontCollection.</param>
         public DefaultGraphicEngine(FontFamily fallbackFontFamily, FontCollection fontCollection, bool addSystemFonts = true)
         {
-            if (fontCollection.Families.Any(x => x.Name == fallbackFontFamily.Name))
+            if (!fontCollection.Families.Any(x => x.Name == fallbackFontFamily.Name))
                 throw new ArgumentNullException(nameof(fallbackFontFamily));
 
             if (fontCollection is null)
