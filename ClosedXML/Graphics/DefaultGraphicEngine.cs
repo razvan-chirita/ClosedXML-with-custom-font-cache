@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using ClosedXML.Excel;
 using ClosedXML.Excel.Drawings;
 using SixLabors.Fonts;
@@ -51,7 +52,12 @@ namespace ClosedXML.Graphics
             if (string.IsNullOrWhiteSpace(fallbackFont))
                 throw new ArgumentException(nameof(fallbackFont));
 
-            _fontCollection = new Lazy<IReadOnlyFontCollection>(() => SystemFonts.Collection);
+            _fontCollection = new Lazy<IReadOnlyFontCollection>(() =>
+            {
+                FontCollection fonts = new FontCollection();
+                fonts.AddSystemFonts();
+                return fonts;
+            });
             _fallbackFont = fallbackFont;
             _loadFont = LoadFont;
             _calculateMaxDigitWidth = CalculateMaxDigitWidth;
@@ -78,6 +84,33 @@ namespace ClosedXML.Graphics
 
             _fontCollection = new Lazy<IReadOnlyFontCollection>(() => fontCollection.AddSystemFonts());
             _fallbackFont = fallbackFamily.Name;
+            _loadFont = LoadFont;
+            _calculateMaxDigitWidth = CalculateMaxDigitWidth;
+        }
+
+        /// <summary>
+        /// Initialize a new instance of the engine. The engine will be able to use system fonts and fonts loaded from external sources.
+        /// </summary>
+        /// <remarks>Useful/necessary for environments without an access to filesystem.</remarks>
+        /// <param name="fallbackFontFamily">Fallback font family from FontCollection.</param>
+        /// <param name="fontCollection">FontCollection to be used font source.</param>
+        /// <param name="addSystemFonts">True if systemFonts should be added to FontCollection.</param>
+        public DefaultGraphicEngine(FontFamily fallbackFontFamily, FontCollection fontCollection, bool addSystemFonts = true)
+        {
+            if (fontCollection.Families.Any(x => x.Name == fallbackFontFamily.Name))
+                throw new ArgumentNullException(nameof(fallbackFontFamily));
+
+            if (fontCollection is null)
+                throw new ArgumentNullException(nameof(fontCollection));
+
+            _fontCollection = new Lazy<IReadOnlyFontCollection>(() =>
+            {
+                if (addSystemFonts)
+                    fontCollection.AddSystemFonts();
+
+                return fontCollection;
+            });
+            _fallbackFont = fallbackFontFamily.Name;
             _loadFont = LoadFont;
             _calculateMaxDigitWidth = CalculateMaxDigitWidth;
         }

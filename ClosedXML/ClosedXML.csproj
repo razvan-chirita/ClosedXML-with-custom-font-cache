@@ -12,6 +12,10 @@
   <PropertyGroup>
     <!-- NU5104 - SixLabors.Fonts is available only as a prerelease -->
     <NoWarn>$(NoWarn);NU1605;NU5104;CS1591</NoWarn>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>$(AssemblyName)-with-font-cache</PackageId>
+    <Version>0.97.1-preview-rcx2</Version>
+    <IncludeSymbols>False</IncludeSymbols>
   </PropertyGroup>
 
   <ItemGroup>
